@@ -5,17 +5,13 @@ import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.alexander.parco.lab08.adapter.PokemonAdapter
-import com.alexander.parco.lab08.data.Service.PokemonApi
 import com.alexander.parco.lab08.data.models.payload.PokemonResponse
 import com.alexander.parco.lab08.databinding.ActivityMainBinding
+import com.alexander.parco.lab08.ui.viewmodel.MainViewModel
 import com.yuyakaido.android.cardstackview.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate),
     CardStackListener,
@@ -27,31 +23,21 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private val manager by lazy {CardStackLayoutManager(this, this)}
 
+    private val mainViewModel by lazy { MainViewModel() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializeTinderCard()
-        getAllPokemons()
-    }
 
-    private fun buildRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://pokeapi.co/api/v2/pokemon/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    private fun getAllPokemons() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = buildRetrofit().create(PokemonApi::class.java).getPokemons()
-            if(call.isSuccessful){
-                call.body()?.let {
-                    runOnUiThread {
-                        adapter.list = it.results
-                        adapter.notifyDataSetChanged()
-                    }
-                }
-            }
+        mainViewModel.pokemonList.observe(this) {
+            adapter.list = it
+            adapter.notifyDataSetChanged()
         }
+
+        mainViewModel.isLoading.observe(this) {
+            binding.progressBar.isVisible = it
+        }
+
     }
 
     private fun initializeTinderCard(){

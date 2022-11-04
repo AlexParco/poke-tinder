@@ -6,16 +6,17 @@ import android.widget.Toast
 import com.alexander.parco.lab08.util.SharedPreferenceUtil
 import com.alexander.parco.lab08.databinding.ActivityLoginBinding
 import com.alexander.parco.lab08.data.models.User
+import com.alexander.parco.lab08.ui.viewmodel.LoginViewModel
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate) {
 
-    private lateinit var sharedPreferenceUtil: SharedPreferenceUtil
+    private lateinit var loginViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferenceUtil = SharedPreferenceUtil().also {
-            it.setSharedPreference(this)
-        }
+        loginViewModel = LoginViewModel(this)
+
+        loginViewModel.onCreate()
         binding.btnLogin.setOnClickListener {
             startLogin()
         }
@@ -24,18 +25,22 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
-    }
-    fun startLogin(){
-        val email = binding.edtEmail.text.toString()
-        val password = binding.edtPassword.text.toString()
-
-        val user: User? = sharedPreferenceUtil.getUser()
-
-        if(email == user?.email && password == user.password){
-            startActivity(Intent(this, MainActivity::class.java))
-        }else{
-            Toast.makeText(this,"Error usuario", Toast.LENGTH_SHORT).show()
+        loginViewModel.emptyFieldError.observe(this){
+            Toast.makeText(this, "Ingrese los datos de usuario", Toast.LENGTH_SHORT).show()
         }
+        loginViewModel.fieldsAuthenticationError.observe(this){
+            Toast.makeText(this, "Error usuario", Toast.LENGTH_SHORT).show()
+        }
+        loginViewModel.goSuccessActivity.observe(this){
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+    }
+
+    fun startLogin() {
+        loginViewModel.validateInputs(
+            binding.edtEmail.text.toString(),
+            binding.edtPassword.text.toString()
+        )
     }
 
 }
