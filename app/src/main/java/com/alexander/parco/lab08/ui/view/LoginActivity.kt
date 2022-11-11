@@ -1,11 +1,10 @@
-package com.alexander.parco.lab08.ui
+package com.alexander.parco.lab08.ui.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
-import com.alexander.parco.lab08.util.SharedPreferenceUtil
 import com.alexander.parco.lab08.databinding.ActivityLoginBinding
-import com.alexander.parco.lab08.data.models.User
 import com.alexander.parco.lab08.ui.viewmodel.LoginViewModel
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate) {
@@ -37,6 +36,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
     }
 
     fun startLogin() {
+        Log.i("USER",binding.edtEmail.text.toString() )
+        Log.i("USER",binding.edtPassword.text.toString() )
         loginViewModel.validateInputs(
             binding.edtEmail.text.toString(),
             binding.edtPassword.text.toString()

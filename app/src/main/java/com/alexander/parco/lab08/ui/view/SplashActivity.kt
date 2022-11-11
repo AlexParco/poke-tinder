@@ -1,4 +1,4 @@
-package com.alexander.parco.lab08.ui
+package com.alexander.parco.lab08.ui.view
 
 import android.annotation.SuppressLint
 import android.content.Intent

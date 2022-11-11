@@ -1,4 +1,4 @@
-package com.alexander.parco.lab08.ui
+package com.alexander.parco.lab08.ui.view
 
 import android.os.Bundle
 import android.view.LayoutInflater

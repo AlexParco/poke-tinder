@@ -1,4 +1,4 @@
-package com.alexander.parco.lab08.adapter
+package com.alexander.parco.lab08.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 
 class PokemonAdapter(
     var list: List<PokemonResponse>,
-    val callback: CallBack,
+    val Callback: CallBack,
 ): RecyclerView.Adapter<PokemonAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,7 +30,7 @@ class PokemonAdapter(
         fun bind(pokemon: PokemonResponse){
             with(binding) {
                 root.setOnClickListener{
-                    callback.onClickPokemonInformation(pokemon)
+                    Callback.onClickPokemonInformation(pokemon)
                 }
                 tvName.text = pokemon.name
                 Glide

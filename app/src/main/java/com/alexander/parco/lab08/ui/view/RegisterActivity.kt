@@ -1,9 +1,8 @@
-package com.alexander.parco.lab08.ui
+package com.alexander.parco.lab08.ui.view
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import com.alexander.parco.lab08.util.SharedPreferenceUtil
 import com.alexander.parco.lab08.databinding.ActivityRegisterBinding
 import com.alexander.parco.lab08.data.models.User
 import com.alexander.parco.lab08.ui.viewmodel.RegisterViewModel
