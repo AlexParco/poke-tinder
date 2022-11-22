@@ -25,7 +25,7 @@ class RegisterViewModel(
     }
 
     fun validateInputs(user: User){
-        if (user.name.isEmpty() && user.email.isEmpty() && user.password.isEmpty()){
+        if (user.name.isEmpty() || user.email.isEmpty() || user.password.isEmpty()){
             emptyFieldError.postValue(true)
         }else{
             goSuccessActivity.postValue(true)
